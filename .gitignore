@@ -1,0 +1,5 @@
+density_matrix_sim_playground.py
+__pycache__
+.DS_store
+.ipynb_checkpoints
+*.swp
