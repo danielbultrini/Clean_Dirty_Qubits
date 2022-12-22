@@ -18,7 +18,7 @@ def figure_5_data(
     num_qubits=4,
     sim_seeds=[0, 1, 2, 3],
     single_qubit_depol_prob=2.425 * 1e-3,
-    two_qubit_depol_prob=2.425 * 1e-3,
+    two_qubit_depol_prob=None,
     calc_grads_built_in=False,
 ):
     """
@@ -56,7 +56,8 @@ def figure_5_data(
     }
 
     # Experiment setup
-
+    if two_qubit_depol_prob is None:
+        two_qubit_depol_prob = single_qubit_depol_prob
     for sim_seed in sim_seeds:
         print("Sim seed: ", sim_seed)
         np.random.seed(sim_seed)
