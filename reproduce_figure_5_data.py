@@ -18,7 +18,7 @@ def figure_5_data(
     num_qubits=4,
     sim_seeds=[0, 1, 2, 3],
     single_qubit_depol_prob=2.425 * 1e-3,
-    two_qubit_depol_prob=2.425 * 1e-2,
+    two_qubit_depol_prob=2.425 * 1e-3,
     calc_grads_built_in=False,
 ):
     """

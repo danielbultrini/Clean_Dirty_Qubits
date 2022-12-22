@@ -19,9 +19,13 @@ def hva_circuit(n_qubits, n_layers, params, measure=False):
     for i in range(0, 2 * n_layers, 2):
         for j in range(n_qubits - 1):
             qc.rxx(params[i], j, j + 1)
+            # qc.rx(0,j)
+            # qc.rx(0,j+1)
+
 
         qc.rxx(params[i], -1, 0)  # periodic boundary conditions
-
+        # qc.rx(0,-1)
+        # qc.rx(0,0)
         qc.rz(params[i + 1], range(n_qubits))
 
     if measure:
@@ -58,6 +62,8 @@ def param_shift_hva_circuit(
                 n_qubits - 1
             ):  # add Molmer-Sorenson gates https://en.wikipedia.org/wiki/M%C3%B8lmer%E2%80%93S%C3%B8rensen_gate
                 qc.rxx(params[j], k, k + 1)
+                # # qc.rx(0,k)
+                # # qc.rx(0,k+1)
 
             qc.rxx(params[j], -1, 0)  # periodic boundary conditions
 
@@ -67,10 +73,14 @@ def param_shift_hva_circuit(
     else:  # XX layer
         for j in range(target_param, target_param + num_dummy_params - 1):
             qc.rxx(params[j], j - target_param, j - target_param + 1)
+            # # qc.rx(0,j - target_param)
+            # # qc.rx(0,j - target_param + 1)
 
         qc.rxx(
             params[target_param + num_dummy_params - 1], -1, 0
         )  # periodic boundary conditions
+        # # qc.rx(0,-1)
+        # # qc.rx(0,0)
 
     for j in range(
         target_param + num_dummy_params, 2 * n_layers - 1 + num_dummy_params
@@ -81,16 +91,25 @@ def param_shift_hva_circuit(
             else:
                 for k in range(n_qubits - 1):
                     qc.rxx(params[j], k, k + 1)
+                    # qc.rx(0,k)
+                    # qc.rx(0,k+1)
 
                 qc.rxx(params[j], -1, 0)  # periodic boundary conditions
+                # qc.rx(0,-1)
+                # qc.rx(0,0)
+
         else:
             if (j + 1) % 2 == 0:
                 qc.rz(params[j], range(n_qubits))
             else:
                 for k in range(n_qubits - 1):
                     qc.rxx(params[j], k, k + 1)
+                    # qc.rx(0,k)
+                    # qc.rx(0,k+1)
 
                 qc.rxx(params[j], -1, 0)  # periodic boundary conditions
+                # qc.rx(0,-1)
+                # qc.rx(0,0)
 
     if measure:
         return qc.measure_all()
