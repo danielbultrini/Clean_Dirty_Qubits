@@ -205,7 +205,7 @@ def parameter_shift_gradients_hva(
                 plus_qcs += full_plus_qcs
                 minus_qcs += full_minus_qcs
 
-            result = backend.run(plus_qcs + minus_qcs, shots).result()
+            result = backend.run(plus_qcs + minus_qcs, 1024).result()
 
             for j in range(num_dummy_params):
                 counts_plus = result.get_counts()[
