@@ -141,7 +141,6 @@ def figure_5_data(
                     "             Computing gradients for layers: {}".format(n_layers)
                 )
                 np.random.seed(sim_seed+n_layers)
-
                 initial_param_values = np.random.uniform(
                     0, 2 * np.pi, size=2 * n_layers
                 )
