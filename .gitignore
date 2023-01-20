@@ -3,3 +3,4 @@ __pycache__
 .DS_store
 .ipynb_checkpoints
 *.swp
+precomputed_big.pkl
