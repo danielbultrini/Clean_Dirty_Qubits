@@ -184,13 +184,13 @@ def parameter_shift_gradients_hva(
                     qc.assign_parameters(plus_params),
                     backend=backend,
                     basis_gates=basis_gates,
-                    optimization_level=0
+                    optimization_level=0,
                 )
                 param_shift_minus_qc = transpile(
                     qc.assign_parameters(minus_params),
                     backend=backend,
                     basis_gates=basis_gates,
-                    optimization_level=0
+                    optimization_level=0,
                 )
 
                 # construct measurement circuits

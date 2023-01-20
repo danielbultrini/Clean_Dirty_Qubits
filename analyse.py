@@ -82,7 +82,7 @@ def facet_plot(
     row: int = None,
     kind: str = "line",
     col_wrap: int = None,
-    estimator = np.median,
+    estimator=np.median,
     ci: str = None,
     height: float = 5,
     aspect: float = 1.5,
@@ -119,7 +119,7 @@ def facet_plot(
         ci=ci,
         height=height,
         aspect=aspect,
-        palette='flare'
+        palette="flare",
     )
 
     return ax
@@ -181,4 +181,3 @@ def prepare_dataframe(folder_path: str, filter: str = ""):
     for old, new in readable_names.items():
         df["Noise Type"] = df["Noise Type"].str.replace(old, new, regex=False)
     return df
-

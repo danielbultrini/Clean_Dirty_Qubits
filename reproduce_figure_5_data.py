@@ -52,7 +52,7 @@ def figure_5_data(
         "SimSeed": [],
         "RunID": [],
         "Noise type": [],
-        "Setup:":[]
+        "Setup:": [],
     }
 
     # Experiment setup
@@ -83,10 +83,12 @@ def figure_5_data(
         lopsided_depol_error = QuantumError(
             zip(lopsided_depol_pauli_strings, depol_probs)
         )
-        
-        double_depol_pauli_strings = [Pauli(s) for s in ["II", "XI", "ZI", "YI", "IX","IZ","IY"]]
+
+        double_depol_pauli_strings = [
+            Pauli(s) for s in ["II", "XI", "ZI", "YI", "IX", "IZ", "IY"]
+        ]
         double_probs = [
-            1 - 2*two_qubit_depol_prob,
+            1 - 2 * two_qubit_depol_prob,
             two_qubit_depol_prob / 3,
             two_qubit_depol_prob / 3,
             two_qubit_depol_prob / 3,
@@ -94,10 +96,8 @@ def figure_5_data(
             two_qubit_depol_prob / 3,
             two_qubit_depol_prob / 3,
         ]
-        double_depol_error = QuantumError(
-            zip(double_depol_pauli_strings, double_probs)
-        )
-### Clean and dirty setup
+        double_depol_error = QuantumError(zip(double_depol_pauli_strings, double_probs))
+        ### Clean and dirty setup
         for dirty_qubits in range(
             num_qubits, -1, -1
         ):  # the first dirty_qubits qubits will be dirty, rest clean
@@ -140,7 +140,7 @@ def figure_5_data(
                 print(
                     "             Computing gradients for layers: {}".format(n_layers)
                 )
-                np.random.seed(sim_seed+n_layers)
+                np.random.seed(sim_seed + n_layers)
                 initial_param_values = np.random.uniform(
                     0, 2 * np.pi, size=2 * n_layers
                 )
@@ -186,18 +186,17 @@ def figure_5_data(
                         [np.divide(np.abs(g), num_qubits) for g in built_in_grads],
                     )
 
-
-##### Variable error setup
+        ##### Variable error setup
         name = "Variable error"
         for dirty_qubits in range(
-            num_qubits-1, 0, -1
+            num_qubits - 1, 0, -1
         ):  # the first dirty_qubits qubits will be dirty, rest clean
             print("     variable error noisy qubit euivalent", dirty_qubits)
 
             clean_qubits = num_qubits - dirty_qubits
             noise_model = NoiseModel()
-            var_error_one = single_qubit_depol_prob * dirty_qubits/num_qubits
-            var_error_two = two_qubit_depol_prob * dirty_qubits/num_qubits
+            var_error_one = single_qubit_depol_prob * dirty_qubits / num_qubits
+            var_error_two = two_qubit_depol_prob * dirty_qubits / num_qubits
             depol_error = depolarizing_error(var_error_one, 1)
             cx_depol_error = depolarizing_error(var_error_two, 2)
 
@@ -212,9 +211,11 @@ def figure_5_data(
                 zip(lopsided_depol_pauli_strings, depol_probs)
             )
 
-            double_depol_pauli_strings = [Pauli(s) for s in ["II", "XI", "ZI", "YI", "IX","IZ","IY"]]
+            double_depol_pauli_strings = [
+                Pauli(s) for s in ["II", "XI", "ZI", "YI", "IX", "IZ", "IY"]
+            ]
             double_probs = [
-                1 - 2*var_error_two,
+                1 - 2 * var_error_two,
                 var_error_two / 3,
                 var_error_two / 3,
                 var_error_two / 3,
@@ -225,12 +226,9 @@ def figure_5_data(
             double_depol_error = QuantumError(
                 zip(double_depol_pauli_strings, double_probs)
             )
-            
-            
+
             for nd1 in range(num_qubits):
-                noise_model.add_quantum_error(
-                    depol_error, ["rx", "ry", "rz"], [nd1]
-                )
+                noise_model.add_quantum_error(depol_error, ["rx", "ry", "rz"], [nd1])
                 for nd2 in range(nd1 + 1, num_qubits):
                     noise_model.add_quantum_error(
                         double_depol_error, ["rxx"], [nd1, nd2]
@@ -238,7 +236,6 @@ def figure_5_data(
                     noise_model.add_quantum_error(
                         double_depol_error, ["rxx"], [nd2, nd1]
                     )
-
 
             noisy_backend = AerSimulator(
                 method="density_matrix", noise_model=noise_model
@@ -253,7 +250,7 @@ def figure_5_data(
                 print(
                     "             Computing gradients for layers: {}".format(n_layers)
                 )
-                np.random.seed(sim_seed+n_layers)
+                np.random.seed(sim_seed + n_layers)
                 initial_param_values = np.random.uniform(
                     0, 2 * np.pi, size=2 * n_layers
                 )
@@ -299,8 +296,7 @@ def figure_5_data(
                         [np.divide(np.abs(g), num_qubits) for g in built_in_grads],
                     )
 
-
     df = pd.DataFrame(exp_params)
-    df['Absolute gradient'] = np.abs(df['Grad'])/df.qubits
+    df["Absolute gradient"] = np.abs(df["Grad"]) / df.qubits
     df.to_pickle(fu.exp_filename(exp_params) + ".pkl")
     return df

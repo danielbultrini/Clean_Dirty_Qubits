@@ -22,7 +22,6 @@ def hva_circuit(n_qubits, n_layers, params, measure=False):
             # qc.rx(0,j)
             # qc.rx(0,j+1)
 
-
         qc.rxx(params[i], -1, 0)  # periodic boundary conditions
         # qc.rx(0,-1)
         # qc.rx(0,0)
