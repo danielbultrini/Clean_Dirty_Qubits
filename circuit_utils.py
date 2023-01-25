@@ -2,7 +2,9 @@ from qiskit import QuantumCircuit, QuantumRegister
 
 
 def hva_circuit(n_qubits, n_layers, params, measure=False):
-    """Generated the HVA ansatz
+    """Generated the HVA ansatz. The ansatz contains identity operations after 
+    the XX gate (rx rotations of angle 0), so that the noise is applied in the same way as the paper 
+    (single qubit depolarizing noise after the XX gate on dirty qubits).
 
     Args:
         n_qubits (int): number of qubits
@@ -42,7 +44,9 @@ def hva_circuit(n_qubits, n_layers, params, measure=False):
 def param_shift_hva_circuit(
     n_qubits, n_layers, params, num_dummy_params, target_param, measure=False
 ):
-    """HVA circuit for parameter shift rule
+    """HVA circuit for parameter shift rule. The ansatz contains identity operations after 
+    the XX gate (rx rotations of angle 0), so that the noise is applied in the same way as the paper 
+    (single qubit depolarizing noise after the XX gate on dirty qubits).
 
     Args:
         n_qubits (int): number of qubits in ansatz
