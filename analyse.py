@@ -6,7 +6,6 @@ import pandas as pd
 import seaborn as sns
 from typing import Callable
 
-# from matlab_caller import run_parameters
 # Code to read all available dataframes and concatinating them in order
 # to look for missing steps and then plot the resutls
 
