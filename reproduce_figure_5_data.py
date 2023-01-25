@@ -70,33 +70,8 @@ def figure_5_data(
 
         # build noise model
 
-        depol_error = depolarizing_error(single_qubit_depol_prob, 1)
-        cx_depol_error = depolarizing_error(two_qubit_depol_prob, 2)
+        depol_error = depolarizing_error(single_qubit_depol_prob, 1, True)
 
-        lopsided_depol_pauli_strings = [Pauli(s) for s in ["II", "XI", "ZI", "YI"]]
-        depol_probs = [
-            1 - two_qubit_depol_prob,
-            two_qubit_depol_prob / 3,
-            two_qubit_depol_prob / 3,
-            two_qubit_depol_prob / 3,
-        ]
-        lopsided_depol_error = QuantumError(
-            zip(lopsided_depol_pauli_strings, depol_probs)
-        )
-
-        double_depol_pauli_strings = [
-            Pauli(s) for s in ["II", "XI", "ZI", "YI", "IX", "IZ", "IY"]
-        ]
-        double_probs = [
-            1 - 2 * two_qubit_depol_prob,
-            two_qubit_depol_prob / 3,
-            two_qubit_depol_prob / 3,
-            two_qubit_depol_prob / 3,
-            two_qubit_depol_prob / 3,
-            two_qubit_depol_prob / 3,
-            two_qubit_depol_prob / 3,
-        ]
-        double_depol_error = QuantumError(zip(double_depol_pauli_strings, double_probs))
         ### Clean and dirty setup
         for dirty_qubits in range(
             num_qubits, -1, -1
@@ -108,23 +83,10 @@ def figure_5_data(
 
             if dirty_qubits > 0:
                 for nd1 in range(dirty_qubits):
+                    nd1 = num_qubits-nd1-1 #from the bottom up
                     noise_model.add_quantum_error(
-                        depol_error, ["rx", "ry", "rz"], [nd1]
+                        depol_error, ["rx", "ry", "rz","I","i","id"], [nd1] # added all different identities just to make sure they are caught.
                     )
-                    for nd2 in range(nd1 + 1, dirty_qubits):
-                        noise_model.add_quantum_error(
-                            double_depol_error, ["rxx"], [nd1, nd2]
-                        )
-                        noise_model.add_quantum_error(
-                            double_depol_error, ["rxx"], [nd2, nd1]
-                        )
-
-                if clean_qubits > 0:
-                    for nd in range(dirty_qubits):
-                        for nc in range(clean_qubits):
-                            noise_model.add_quantum_error(
-                                lopsided_depol_error, ["rxx"], [nd, dirty_qubits + nc]
-                            )
 
             noisy_backend = AerSimulator(
                 method="density_matrix", noise_model=noise_model
@@ -144,8 +106,8 @@ def figure_5_data(
                 initial_param_values = np.random.uniform(
                     0, 2 * np.pi, size=2 * n_layers
                 )
-                prefactor = 1 / 2
-                shift = np.pi / (4 * prefactor)
+                prefactor = -1
+                shift = np.pi / 2 
                 gradients = gu.parameter_shift_gradients_hva(
                     noisy_backend,
                     num_qubits,
@@ -254,6 +216,7 @@ def figure_5_data(
                 initial_param_values = np.random.uniform(
                     0, 2 * np.pi, size=2 * n_layers
                 )
+                print(initial_param_values)
                 prefactor = 1 / 2
                 shift = np.pi / (4 * prefactor)
                 gradients = gu.parameter_shift_gradients_hva(
