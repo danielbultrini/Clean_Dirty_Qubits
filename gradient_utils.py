@@ -228,23 +228,26 @@ def parameter_shift_gradients_hva(
 
                 dummy_parameter_gradient_sum += prefactor * (cost_plus - cost_minus)
         elif backend.name() == "aer_simulator_density_matrix":
-            params_unshift = {
-                param: value
-                for param, value, k in zip(params, param_values, range(len(params)))
-            }
-            param_unshift_qc = qc.assign_parameters(params_unshift)
-            # print(param_unshift_qc.draw())
-            param_unshift_qc.save_density_matrix()
+            
+            ############ Section for benchmarking with original code
+            
+            # params_unshift = {
+            #     param: value
+            #     for param, value, k in zip(params, param_values, range(len(params)))
+            # }
+            # param_unshift_qc = qc.assign_parameters(params_unshift)
+            # # print(param_unshift_qc.draw())
+            # param_unshift_qc.save_density_matrix()
 
-            full_unshift_qcs = (
-                backend.run(param_unshift_qc).result().data()["density_matrix"]
-            )
-            res = np.trace(np.matmul(np.kron(np.kron(np.kron(np.array([[1,0],[0,-1]]),np.array([[1,0],[0,1]])),np.array([[1,0],[0,1]])),np.array([[1,0],[0,1]])), full_unshift_qcs)).real
-            res2 = np.trace(np.matmul(np.kron(np.kron(np.kron(np.array([[0,1],[1,0]]),np.array([[0,1],[1,0]])),np.array([[1,0],[0,1]])),np.array([[1,0],[0,1]])), full_unshift_qcs)).real
+            # full_unshift_qcs = (
+            #     backend.run(param_unshift_qc).result().data()["density_matrix"]
+            # )
+            # res = np.trace(np.matmul(np.kron(np.kron(np.kron(np.array([[1,0],[0,-1]]),np.array([[1,0],[0,1]])),np.array([[1,0],[0,1]])),np.array([[1,0],[0,1]])), full_unshift_qcs)).real
+            # res2 = np.trace(np.matmul(np.kron(np.kron(np.kron(np.array([[0,1],[1,0]]),np.array([[0,1],[1,0]])),np.array([[1,0],[0,1]])),np.array([[1,0],[0,1]])), full_unshift_qcs)).real
 
 
-            print(res)
-            print(res2)
+            # print(res)
+            # print(res2)
 
             for j in range(num_dummy_params):
                 # shift the target dummy parameter

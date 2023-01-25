@@ -106,7 +106,7 @@ def figure_5_data(
                 initial_param_values = np.random.uniform(
                     0, 2 * np.pi, size=2 * n_layers
                 )
-                prefactor = -1
+                prefactor = 1
                 shift = np.pi / 2 
                 gradients = gu.parameter_shift_gradients_hva(
                     noisy_backend,
