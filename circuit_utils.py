@@ -5,7 +5,14 @@ def hva_circuit(n_qubits, n_layers, params, measure=False):
     """Generated the HVA ansatz. The ansatz contains identity operations after 
     the XX gate (rx rotations of angle 0), so that the noise is applied in the same way as the paper 
     (single qubit depolarizing noise after the XX gate on dirty qubits).
-
+    
+    Circuit this returns:
+    q0>--X(b)--rx(0)--rz(a) ....(repeating with new params)
+         |
+    q1>--X(b)--rx(0)--rz(a) ....(repeating with new params)
+    ...
+    qn>...
+    
     Args:
         n_qubits (int): number of qubits
         n_layers (int): layers of ansatz
@@ -47,7 +54,14 @@ def param_shift_hva_circuit(
     """HVA circuit for parameter shift rule. The ansatz contains identity operations after 
     the XX gate (rx rotations of angle 0), so that the noise is applied in the same way as the paper 
     (single qubit depolarizing noise after the XX gate on dirty qubits).
-
+    
+    Circuit this returns:
+    q0>--X(b)--rx(0)--rz(a) ....(repeating with new params)
+         |
+    q1>--X(b)--rx(0)--rz(a) ....(repeating with new params)
+    ...
+    qn>...
+    
     Args:
         n_qubits (int): number of qubits in ansatz
         n_layers (int): number of layers

@@ -12,7 +12,7 @@ import circuit_utils as cu
 
 
 def qiskit_builtin_gradients(H, n_qubits, n_layers, values):
-    """Returns parameter shift gradients from qiskit internal functions.
+    """Returns parameter shift gradients from qiskit internal functions. Very slow.
 
     Args:
         H (qiskit hamiltonian): Hamiltonian of the system
@@ -49,8 +49,7 @@ def parameter_shift_gradients_hva(
     Returns:
         list: list of gradients for each parameter
     """
-    # This should go somewhere else
-    basis_gates = ["rx", "ry", "rz", "rxx"]
+    basis_gates = ["rx", "ry", "rz", "rxx"] # Convenience definition
 
     # Construct operator strings to compute expectation values
     ops = hu.tfim_1d_ops(n_qubits)
@@ -79,14 +78,15 @@ def parameter_shift_gradients_hva(
             + [v for v in initial_param_values[i + 1 :]]
         )
 
-        # the gradient for the ith parameter is defined as the sum over the gradients for the 'num_dummy_params' dummy parameters associated with the ith parameter (product rule)
+        # the gradient for the ith parameter is defined as the sum over the gradients for the 'num_dummy_params' 
+        # dummy parameters associated with the ith parameter (product rule)
         dummy_parameter_gradient_sum = 0
         # construct the HVA circuit with distinct parameters in the target sub-layer
         qc = cu.param_shift_hva_circuit(n_qubits, n_layers, params, num_dummy_params, i)
         plus_qcs = []
         minus_qcs = []
 
-        # compute the gradient of the cost function wrt each dummy parameter in the target sub-layer
+        # compute the gradient of the cost function wrt each dummy parameter in the target sub-layer using statevector simulator
         if backend.name() == "statevector_simulator":
             for j in range(num_dummy_params):
                 # shift the target dummy parameter
@@ -167,7 +167,8 @@ def parameter_shift_gradients_hva(
 
                 dummy_parameter_gradient_sum += prefactor * (cost_plus - cost_minus)
         elif backend.name() == "aer_simulator":
-            # compute the gradient of the cost function wrt each dummy parameter in the target sub-layer
+            # compute the gradient of the cost function wrt each dummy parameter in the 
+            # target sub-layer using the noisy shot based AER simulator
             for j in range(num_dummy_params):
                 # shift the target dummy parameter
                 plus_params = {
