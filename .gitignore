@@ -5,3 +5,5 @@ __pycache__
 *.swp
 precomputed_big.pkl
 initial_values.txt
+./results/precomputed_results_old.pkl
+./results/precomputed_results_oldnoise.pkl
