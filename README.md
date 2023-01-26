@@ -12,7 +12,7 @@ Pandas (1.3.3), seaborn (0.11.2), numpy (1.23.4), qiskit (0.22.1), mthree (1.1.0
 Alternate versions will work, but these are guaranteed to function. 
 
 
-If you find this work useful, please cite it as 
+If you find this work useful, please consider citing the original paper:
 ```
 @misc{https://doi.org/10.48550/arxiv.2205.13454,
   doi = {10.48550/ARXIV.2205.13454},
